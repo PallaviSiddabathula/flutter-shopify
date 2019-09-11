@@ -8,15 +8,16 @@ part of 'product_variant.dart';
 
 ProductVariant _$ProductVariantFromJson(Map<String, dynamic> json) {
   return new ProductVariant(
-      id: json['id'] as String,
+      id: json['id'] == null ? "" : json['id'] as String,
       title: json['title'] as String,
       price: (json['price'] as num).toDouble(),
+      compareAtPrice: json['compareAtPrice'] == null ? (json['price'] as num).toDouble() : (json['compareAtPrice'] as num).toDouble(),
       isAvailable: json['isAvailable'] as bool,
       selectedOptions: (json['selectedOptions'] as List)
           .map((e) => new VariantOption.fromJson(e as Map<String, dynamic>))
           .toList(),
-      image: new ImageDTO.fromJson(json['image'] as Map<String, dynamic>),
-      productImage:
+      image: json['image'] == null ? new ImageDTO() : new ImageDTO.fromJson(json['image'] as Map<String, dynamic>),
+      productImage: json['productImage'] == null ? new ImageDTO() :
           new ImageDTO.fromJson(json['productImage'] as Map<String, dynamic>),
       productId: json['productId'] as String)
     ..crudOperation = json['crudOperation'] as String;
@@ -27,6 +28,7 @@ abstract class _$ProductVariantSerializerMixin {
   String get id;
   String get title;
   double get price;
+  double get compareAtPrice;
   bool get isAvailable;
   List<VariantOption> get selectedOptions;
   ImageDTO get image;
@@ -37,6 +39,7 @@ abstract class _$ProductVariantSerializerMixin {
         'id': id,
         'title': title,
         'price': price,
+        'compareAtPrice': compareAtPrice,
         'isAvailable': isAvailable,
         'selectedOptions': selectedOptions,
         'image': image,
